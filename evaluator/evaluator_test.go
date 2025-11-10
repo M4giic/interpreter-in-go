@@ -91,13 +91,13 @@ func TestIfElseExpressions(t *testing.T) {
 		input    string
 		expected interface{}
 	}{
-		{"if (prawda) { 10 }", 10},
-		{"if (potwarz) { 10 }", nil},
-		{"if (1) { 10 }", 10},
-		{"if (1 < 2) { 10 }", 10},
-		{"if (1 > 2) { 10 }", nil},
-		{"if (1 > 2) { 10 } else { 20 }", 20},
-		{"if (1 < 2) { 10 } else { 20 }", 10},
+		{"gdyby (prawda) { 10 }", 10},
+		{"gdyby (potwarz) { 10 }", nil},
+		{"gdyby (1) { 10 }", 10},
+		{"gdyby (1 < 2) { 10 }", 10},
+		{"gdyby (1 > 2) { 10 }", nil},
+		{"gdyby (1 > 2) { 10 } inaczej { 20 }", 20},
+		{"gdyby (1 < 2) { 10 } inaczej { 20 }", 10},
 	}
 
 	for _, tt := range tests {
@@ -116,19 +116,19 @@ func TestReturnValue(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"return 10;", 10},
-		{"return 10; 9;", 10},
-		{"return 2 * 5; 9;", 10},
-		{"9; return 2 * 5; 9;", 10},
-		{"if (10 > 1) { return 10; }", 10},
+		{"zwracam 10;", 10},
+		{"zwracam 10; 9;", 10},
+		{"zwracam 2 * 5; 9;", 10},
+		{"9; zwracam 2 * 5; 9;", 10},
+		{"gdyby (10 > 1) { zwracam 10; }", 10},
 		{
 			`
-if (10 > 1) {
-  if (10 > 1) {
-    return 10;
+gdyby (10 > 1) {
+  gdyby (10 > 1) {
+    zwracam 10;
   }
 
-  return 1;
+  zwracam 1;
 }
 `,
 			10,
@@ -171,17 +171,17 @@ func TestErrorHandling(t *testing.T) {
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
-			"if (10 > 1) { prawda + potwarz; }",
+			"gdyby (10 > 1) { prawda + potwarz; }",
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
 			`
-if (10 > 1) {
-  if (10 > 1) {
-    return prawda + potwarz;
+gdyby (10 > 1) {
+  gdyby (10 > 1) {
+    zwracam prawda + potwarz;
   }
 
-  return 1;
+  zwracam 1;
 }
 `,
 			"unknown operator: BOOLEAN + BOOLEAN",
@@ -259,7 +259,7 @@ func TestFunctionApplication(t *testing.T) {
 		expected int64
 	}{
 		{"zmienna identity = metoda(x) { x; }; identity(5);", 5},
-		{"zmienna identity = metoda(x) { return x; }; identity(5);", 5},
+		{"zmienna identity = metoda(x) { zwracam x; }; identity(5);", 5},
 		{"zmienna double = metoda(x) { x * 2; }; double(5);", 10},
 		{"zmienna add = metoda(x, y) { x + y; }; add(5, 5);", 10},
 		{"zmienna add = metoda(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},

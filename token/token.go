@@ -52,11 +52,11 @@ type Token struct {
 var keywords = map[string]TokenType{
 	"metoda":  FUNCTION, //fn
 	"zmienna": LET,      //let
-	"prawda":  TRUE,     //prawda
-	"potwarz": FALSE,    //potwarz
-	"if":      IF,       //jeżeli
-	"else":    ELSE,     //inaczej
-	"return":  RETURN,   //zwracam
+	"prawda":  TRUE,     //true
+	"potwarz": FALSE,    //false
+	"gdyby":   IF,       //if
+	"inaczej": ELSE,     //else
+	"zwracam": RETURN,   //return
 }
 
 func LookupIdent(ident string) TokenType {

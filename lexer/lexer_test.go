@@ -17,10 +17,10 @@ zmienna result = add(five, ten);
 !-/*5;
 5 < 10 > 5;
 
-if (5 < 10) {
-	return prawda;
-} else {
-	return potwarz;
+gdyby (5 < 10) {
+	zwracam prawda;
+} inaczej {
+	zwracam potwarz;
 }
 
 10 == 10;
@@ -81,20 +81,20 @@ if (5 < 10) {
 		{token.GT, ">"},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
-		{token.IF, "if"},
+		{token.IF, "gdyby"},
 		{token.LPAREN, "("},
 		{token.INT, "5"},
 		{token.LT, "<"},
 		{token.INT, "10"},
 		{token.RPAREN, ")"},
 		{token.LBRACE, "{"},
-		{token.RETURN, "return"},
+		{token.RETURN, "zwracam"},
 		{token.TRUE, "prawda"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
-		{token.ELSE, "else"},
+		{token.ELSE, "inaczej"},
 		{token.LBRACE, "{"},
-		{token.RETURN, "return"},
+		{token.RETURN, "zwracam"},
 		{token.FALSE, "potwarz"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},

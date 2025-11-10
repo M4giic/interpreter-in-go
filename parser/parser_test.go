@@ -46,9 +46,9 @@ func TestReturnStatements(t *testing.T) {
 		input         string
 		expectedValue interface{}
 	}{
-		{"return 5;", 5},
-		{"return prawda;", true},
-		{"return foobar;", "foobar"},
+		{"zwracam 5;", 5},
+		{"zwracam prawda;", true},
+		{"zwracam foobar;", "foobar"},
 	}
 
 	for _, tt := range tests {
@@ -67,7 +67,7 @@ func TestReturnStatements(t *testing.T) {
 		if !ok {
 			t.Fatalf("stmt not *ast.ReturnStatement. got=%T", stmt)
 		}
-		if returnStmt.TokenLiteral() != "return" {
+		if returnStmt.TokenLiteral() != "zwracam" {
 			t.Fatalf("returnStmt.TokenLiteral not 'return', got %q",
 				returnStmt.TokenLiteral())
 		}
@@ -394,7 +394,7 @@ func TestBooleanExpression(t *testing.T) {
 }
 
 func TestIfExpression(t *testing.T) {
-	input := `if (x < y) { x }`
+	input := `gdyby (x < y) { x }`
 
 	l := lexer.New(input)
 	p := New(l)
@@ -443,7 +443,7 @@ func TestIfExpression(t *testing.T) {
 }
 
 func TestIfElseExpression(t *testing.T) {
-	input := `if (x < y) { x } else { y }`
+	input := `gdyby (x < y) { x } inaczej { y }`
 
 	l := lexer.New(input)
 	p := New(l)
