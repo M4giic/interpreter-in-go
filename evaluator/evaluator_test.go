@@ -40,8 +40,8 @@ func TestEvalBooleanExpression(t *testing.T) {
 		input    string
 		expected bool
 	}{
-		{"true", true},
-		{"false", false},
+		{"prawda", true},
+		{"potwarz", false},
 		{"1 < 2", true},
 		{"1 > 2", false},
 		{"1 < 1", false},
@@ -50,15 +50,15 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{"1 != 1", false},
 		{"1 == 2", false},
 		{"1 != 2", true},
-		{"true == true", true},
-		{"false == false", true},
-		{"true == false", false},
-		{"true != false", true},
-		{"false != true", true},
-		{"(1 < 2) == true", true},
-		{"(1 < 2) == false", false},
-		{"(1 > 2) == true", false},
-		{"(1 > 2) == false", true},
+		{"prawda == prawda", true},
+		{"potwarz == potwarz", true},
+		{"prawda == potwarz", false},
+		{"prawda != potwarz", true},
+		{"potwarz != prawda", true},
+		{"(1 < 2) == prawda", true},
+		{"(1 < 2) == potwarz", false},
+		{"(1 > 2) == prawda", false},
+		{"(1 > 2) == potwarz", true},
 	}
 
 	for _, tt := range tests {
@@ -72,10 +72,10 @@ func TestBangOperator(t *testing.T) {
 		input    string
 		expected bool
 	}{
-		{"!true", false},
-		{"!false", true},
-		{"!!true", true},
-		{"!!false", false},
+		{"!prawda", false},
+		{"!potwarz", true},
+		{"!!prawda", true},
+		{"!!potwarz", false},
 		{"!5", false},
 		{"!!5", true},
 	}
@@ -91,8 +91,8 @@ func TestIfElseExpressions(t *testing.T) {
 		input    string
 		expected interface{}
 	}{
-		{"if (true) { 10 }", 10},
-		{"if (false) { 10 }", nil},
+		{"if (prawda) { 10 }", 10},
+		{"if (potwarz) { 10 }", nil},
 		{"if (1) { 10 }", 10},
 		{"if (1 < 2) { 10 }", 10},
 		{"if (1 > 2) { 10 }", nil},
@@ -147,38 +147,38 @@ func TestErrorHandling(t *testing.T) {
 		expectedMessage string
 	}{
 		{
-			"5 + true;",
+			"5 + prawda;",
 			"type mismatch: INTEGER + BOOLEAN",
 		},
 		{
-			"5 + true; 5;",
+			"5 + prawda; 5;",
 			"type mismatch: INTEGER + BOOLEAN",
 		},
 		{
-			"-true",
+			"-prawda",
 			"unknown operator: -BOOLEAN",
 		},
 		{
-			"true + false;",
+			"prawda + potwarz;",
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
-			"true + false + true + false;",
+			"prawda + potwarz + prawda + potwarz;",
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
-			"5; true + false; 5",
+			"5; prawda + potwarz; 5",
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
-			"if (10 > 1) { true + false; }",
+			"if (10 > 1) { prawda + potwarz; }",
 			"unknown operator: BOOLEAN + BOOLEAN",
 		},
 		{
 			`
 if (10 > 1) {
   if (10 > 1) {
-    return true + false;
+    return prawda + potwarz;
   }
 
   return 1;
@@ -218,10 +218,10 @@ func TestLetStatements(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"let a = 5; a;", 5},
-		{"let a = 5 * 5; a;", 25},
-		{"let a = 5; let b = a; b;", 5},
-		{"let a = 5; let b = a; let c = a + b + 5; c;", 15},
+		{"zmienna a = 5; a;", 5},
+		{"zmienna a = 5 * 5; a;", 25},
+		{"zmienna a = 5; zmienna b = a; b;", 5},
+		{"zmienna a = 5; zmienna b = a; zmienna c = a + b + 5; c;", 15},
 	}
 
 	for _, tt := range tests {
@@ -230,27 +230,27 @@ func TestLetStatements(t *testing.T) {
 }
 
 func TestFunctionObject(t *testing.T) {
-	input := "fn(x) { x + 2; };"
+	input := "metoda(x) { x + 2; };"
 
 	evaluated := testEval(input)
-	fn, ok := evaluated.(*object.Function)
+	metoda, ok := evaluated.(*object.Function)
 	if !ok {
 		t.Fatalf("object is not Function. got=%T (%+v)", evaluated, evaluated)
 	}
 
-	if len(fn.Parameters) != 1 {
+	if len(metoda.Parameters) != 1 {
 		t.Fatalf("function has wrong parameters. Parameters=%+v",
-			fn.Parameters)
+			metoda.Parameters)
 	}
 
-	if fn.Parameters[0].String() != "x" {
-		t.Fatalf("parameter is not 'x'. got=%q", fn.Parameters[0])
+	if metoda.Parameters[0].String() != "x" {
+		t.Fatalf("parameter is not 'x'. got=%q", metoda.Parameters[0])
 	}
 
 	expectedBody := "(x + 2)"
 
-	if fn.Body.String() != expectedBody {
-		t.Fatalf("body is not %q. got=%q", expectedBody, fn.Body.String())
+	if metoda.Body.String() != expectedBody {
+		t.Fatalf("body is not %q. got=%q", expectedBody, metoda.Body.String())
 	}
 }
 func TestFunctionApplication(t *testing.T) {
@@ -258,12 +258,12 @@ func TestFunctionApplication(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"let identity = fn(x) { x; }; identity(5);", 5},
-		{"let identity = fn(x) { return x; }; identity(5);", 5},
-		{"let double = fn(x) { x * 2; }; double(5);", 10},
-		{"let add = fn(x, y) { x + y; }; add(5, 5);", 10},
-		{"let add = fn(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},
-		{"fn(x) { x; }(5)", 5},
+		{"zmienna identity = metoda(x) { x; }; identity(5);", 5},
+		{"zmienna identity = metoda(x) { return x; }; identity(5);", 5},
+		{"zmienna double = metoda(x) { x * 2; }; double(5);", 10},
+		{"zmienna add = metoda(x, y) { x + y; }; add(5, 5);", 10},
+		{"zmienna add = metoda(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},
+		{"metoda(x) { x; }(5)", 5},
 	}
 
 	for _, tt := range tests {

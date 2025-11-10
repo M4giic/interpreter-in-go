@@ -50,13 +50,13 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"fn":     FUNCTION,
-	"let":    LET,
-	"true":   TRUE,
-	"false":  FALSE,
-	"if":     IF,
-	"else":   ELSE,
-	"return": RETURN,
+	"metoda":  FUNCTION, //fn
+	"zmienna": LET,      //let
+	"prawda":  TRUE,     //prawda
+	"potwarz": FALSE,    //potwarz
+	"if":      IF,       //jeżeli
+	"else":    ELSE,     //inaczej
+	"return":  RETURN,   //zwracam
 }
 
 func LookupIdent(ident string) TokenType {

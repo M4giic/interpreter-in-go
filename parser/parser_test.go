@@ -13,9 +13,9 @@ func TestLetStatements(t *testing.T) {
 		expectedIdentifier string
 		expectedValue      interface{}
 	}{
-		{"let x = 5;", "x", 5},
-		{"let y = true;", "y", true},
-		{"let foobar = y;", "foobar", "y"},
+		{"zmienna x = 5;", "x", 5},
+		{"zmienna y = prawda;", "y", true},
+		{"zmienna foobar = y;", "foobar", "y"},
 	}
 
 	for _, tt := range tests {
@@ -47,7 +47,7 @@ func TestReturnStatements(t *testing.T) {
 		expectedValue interface{}
 	}{
 		{"return 5;", 5},
-		{"return true;", true},
+		{"return prawda;", true},
 		{"return foobar;", "foobar"},
 	}
 
@@ -149,8 +149,8 @@ func TestParsingPrefixExpressions(t *testing.T) {
 		{"-15;", "-", 15},
 		{"!foobar;", "!", "foobar"},
 		{"-foobar;", "-", "foobar"},
-		{"!true;", "!", true},
-		{"!false;", "!", false},
+		{"!prawda;", "!", true},
+		{"!potwarz;", "!", false},
 	}
 
 	for _, tt := range prefixTests {
@@ -207,9 +207,9 @@ func TestParsingInfixExpressions(t *testing.T) {
 		{"foobar < barfoo;", "foobar", "<", "barfoo"},
 		{"foobar == barfoo;", "foobar", "==", "barfoo"},
 		{"foobar != barfoo;", "foobar", "!=", "barfoo"},
-		{"true == true", true, "==", true},
-		{"true != false", true, "!=", false},
-		{"false == false", false, "==", false},
+		{"prawda == prawda", true, "==", true},
+		{"prawda != potwarz", true, "!=", false},
+		{"potwarz == potwarz", false, "==", false},
 	}
 
 	for _, tt := range infixTests {
@@ -290,20 +290,20 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 			"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 		},
 		{
-			"true",
-			"true",
+			"prawda",
+			"prawda",
 		},
 		{
-			"false",
-			"false",
+			"potwarz",
+			"potwarz",
 		},
 		{
-			"3 > 5 == false",
-			"((3 > 5) == false)",
+			"3 > 5 == potwarz",
+			"((3 > 5) == potwarz)",
 		},
 		{
-			"3 < 5 == true",
-			"((3 < 5) == true)",
+			"3 < 5 == prawda",
+			"((3 < 5) == prawda)",
 		},
 		{
 			"1 + (2 + 3) + 4",
@@ -326,8 +326,8 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 			"(-(5 + 5))",
 		},
 		{
-			"!(true == true)",
-			"(!(true == true))",
+			"!(prawda == prawda)",
+			"(!(prawda == prawda))",
 		},
 		{
 			"a + add(b * c) + d",
@@ -361,8 +361,8 @@ func TestBooleanExpression(t *testing.T) {
 		input           string
 		expectedBoolean bool
 	}{
-		{"true;", true},
-		{"false;", false},
+		{"prawda;", true},
+		{"potwarz;", false},
 	}
 
 	for _, tt := range tests {
@@ -502,7 +502,7 @@ func TestIfElseExpression(t *testing.T) {
 }
 
 func TestFunctionLiteralParsing(t *testing.T) {
-	input := `fn(x, y) { x + y; }`
+	input := `metoda(x, y) { x + y; }`
 
 	l := lexer.New(input)
 	p := New(l)
@@ -553,9 +553,9 @@ func TestFunctionParameterParsing(t *testing.T) {
 		input          string
 		expectedParams []string
 	}{
-		{input: "fn() {};", expectedParams: []string{}},
-		{input: "fn(x) {};", expectedParams: []string{"x"}},
-		{input: "fn(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
+		{input: "metoda() {};", expectedParams: []string{}},
+		{input: "metoda(x) {};", expectedParams: []string{"x"}},
+		{input: "metoda(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
 	}
 
 	for _, tt := range tests {
@@ -690,8 +690,8 @@ func TestStringLiteralExpression(t *testing.T) {
 }
 
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
-	if s.TokenLiteral() != "let" {
-		t.Errorf("s.TokenLiteral not 'let'. got=%q", s.TokenLiteral())
+	if s.TokenLiteral() != "zmienna" {
+		t.Errorf("s.TokenLiteral not 'zmienna'. got=%q", s.TokenLiteral())
 		return false
 	}
 
