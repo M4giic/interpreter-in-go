@@ -6,7 +6,7 @@ var builtins = map[string]*object.Builtin{
 	"dlug": &object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if args == nil {
-				return newError("len has to be called with args")
+				return newError("dlug has to be called with args")
 			}
 			if len(args) != 1 {
 				return newError("dlug has to be called with 1 param")
@@ -26,7 +26,7 @@ var builtins = map[string]*object.Builtin{
 	"pierwszy": &object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
-				return newError("dlug has to be called with 1 param")
+				return newError("pierwszy has to be called with 1 param")
 			}
 			if args[0].Type() != object.ARRAY_OBJ {
 				return newError("pierwszy can only be called on array,not %s", args[0].Type())
@@ -42,10 +42,10 @@ var builtins = map[string]*object.Builtin{
 	"ostatni": &object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
-				return newError("dlug has to be called with 1 param")
+				return newError("ostatni has to be called with 1 param")
 			}
 			if args[0].Type() != object.ARRAY_OBJ {
-				return newError("pierwszy can only be called on array,not %s", args[0].Type())
+				return newError("ostatni can only be called on array,not %s", args[0].Type())
 			}
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
@@ -59,10 +59,10 @@ var builtins = map[string]*object.Builtin{
 	"reszta": &object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
-				return newError("dlug has to be called with 1 param")
+				return newError("reszta has to be called with 1 param")
 			}
 			if args[0].Type() != object.ARRAY_OBJ {
-				return newError("pierwszy can only be called on array,not %s", args[0].Type())
+				return newError("reszta can only be called on array,not %s", args[0].Type())
 			}
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
